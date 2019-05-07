@@ -12,7 +12,7 @@ describe("Lobby controller", () => {
     describe("Create lobby", () => {
         it('Empty name to throw validation error', async () => {
             await expect(createLobby({name:""})).rejects.toEqual(
-                new BaseError("Username is invalid", ErrorCodes.LOBBY_INVALID_NAME)
+                new BaseError("Name is invalid", ErrorCodes.LOBBY_INVALID_NAME)
             );
         });
     });
