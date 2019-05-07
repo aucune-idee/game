@@ -1,6 +1,5 @@
 import { Document, Schema, Model, model} from "mongoose";
 import {MongooseAutoIncrementID} from 'mongoose-auto-increment-reworked';
-import { sanitizeEmail } from "../utils/email.utils";
 
 export interface ILobby extends Document {
   _id:number,
