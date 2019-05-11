@@ -33,13 +33,13 @@ class App {
           // support application/json type post data
           this.app.use(cors({
             origin: function (origin:any, callback:any) {
-                console.log(origin, configuration.cors)
-                if (configuration.cors.indexOf(origin) !== -1) {
+                if (configuration.cors.indexOf(origin) !== -1 || !origin) {
                     callback(null, true)
                 } else {
-                    callback(new Error('Not allowed by CORS'))
+                    callback(new Error('Not allowed by CORS'), false)
                 }
-            }
+            },
+            methods:"GET,HEAD,PUT,PATCH,POST,DELETE"
           }));
         this.app.use(morgan("tiny"));
         this.app.use(bodyParser.json());

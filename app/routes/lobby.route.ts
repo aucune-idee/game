@@ -1,26 +1,26 @@
 import { Request, Response, Router } from 'express';
 import { logged } from '../middlewares/security';
 
-import { createLobby }  from "../controllers/lobby.controller";
+import { createLobby, getLobbies }  from "../controllers/lobby.controller";
 
 let BASE = "/lobbies";
 
 function configure(router:Router):void{
-    router.post(BASE, logged,  async  (req:Request, res:Response) => {
-        console.log(req.body)
-        return createLobby({
+    router.post(BASE, logged(),  async  (req:Request, res:Response) => {
+        createLobby({
             name: req.body.name,
+            owner: res.locals.jwt.payload.id
         })
         .then(lobby => {
             return res.json({ lobby: lobby })
         });
     })
-    .get(BASE, async (req:Request, res:Response) => {
-        res.json({"lobbies":[
-            {"name":"test"}
-        ]})
+    router.get(BASE, async (req:Request, res:Response) => {
+        getLobbies({})
+        .then(result => {
+            res.json(result)
+        })
     })
 }
-
 
 export default configure;

@@ -8,15 +8,15 @@ import {BaseError, ErrorCodes} from '../exceptions/base-error';
 const AUTHORIZATION = "authorization";
 
 export const logged = () => (req: Request, res: Response, next: NextFunction) => {
+    console.log(req);
     if(req === undefined || req.headers === undefined){
-        return next();
+        return next(new BaseError("Auth failed", ErrorCodes.INVALID_AUTH));
     }
     let auth = req.headers[AUTHORIZATION];
     if(auth === undefined){
-        return next();
+        return next(new BaseError("Auth failed", ErrorCodes.INVALID_AUTH));
     }
     const token = <string>auth.replace('Bearer ', '');
-
     try {
         let payload = <any>jwt.verify(token, configuration.jwt.secret);
         if(!res.locals.jwt){
@@ -27,7 +27,7 @@ export const logged = () => (req: Request, res: Response, next: NextFunction) =>
         console.error(error);
         return next(new BaseError("Auth failed", ErrorCodes.INVALID_AUTH));
     }
-    
+    console.log("auth ok")
     next();
 }
 
