@@ -13,7 +13,7 @@ export interface IGetLobbiesOutput{
 
 export interface ICreateLobbyInput{
     name:String;
-    owner:String;
+    owner:Number;
 }
 
 export interface ICreateLobbyInput{
@@ -53,9 +53,11 @@ export async function createLobby(input: ICreateLobbyInput): Promise<ILobby> {
 }
 
 function checkInputs(input: ICreateLobbyInput): Promise<ICreateLobbyInput>{
-    console.log(input);
-    if(input.name === null || input.name === undefined || input.name.trim().length === 0){
+    if(input.name === undefined || input.name === null || input.name.trim().length === 0){
         return Promise.reject(new BaseError("Name is invalid", ErrorCodes.LOBBY_INVALID_NAME));
+    }
+    if(input.owner === undefined || input.owner === null){
+        return Promise.reject(new BaseError("Owner is invalid", ErrorCodes.LOBBY_INVALID_OWNER));
     }
     input.name = input.name.trim();
     return Promise.resolve(input);

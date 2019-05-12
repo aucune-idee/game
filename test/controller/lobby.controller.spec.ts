@@ -11,9 +11,21 @@ LobbySchema.plugin = jest.fn().mockImplementation((plugin, doc)=>{
 describe("Lobby controller", () => {     
     describe("Create lobby", () => {
         it('Empty name to throw validation error', async () => {
-            await expect(createLobby({name:""})).rejects.toEqual(
+            await expect(createLobby({name:"", owner: 0})).rejects.toEqual(
                 new BaseError("Name is invalid", ErrorCodes.LOBBY_INVALID_NAME)
             );
+        });
+        it('Empty owner to throw validation error', async () => {
+            Lobby.create = jest.fn().mockImplementation((param)=>{
+                return Promise.resolve({
+                    name: "whatever",
+                    owner: 0
+                });
+            });
+            await expect(createLobby({name:"whatever", owner: 0})).resolves.toEqual({
+                name: "whatever",
+                owner: 0
+            });
         });
     });
 })

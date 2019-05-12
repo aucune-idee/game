@@ -1,9 +1,11 @@
 export enum ErrorCodes{
     LOBBY_INVALID_NAME,
+    LOBBY_INVALID_OWNER,
     INVALID_AUTH,
 }
 const httpCodes = new Map();
 httpCodes.set(ErrorCodes.LOBBY_INVALID_NAME, 400);
+httpCodes.set(ErrorCodes.LOBBY_INVALID_OWNER, 500);
 httpCodes.set(ErrorCodes.INVALID_AUTH, 401);
 
 
