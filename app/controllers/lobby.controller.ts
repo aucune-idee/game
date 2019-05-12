@@ -1,6 +1,7 @@
 import {Lobby, ILobby } from '../models/lobby.model';
 
 import {BaseError, ErrorCodes} from '../exceptions/base-error';
+import { GameType } from '@enums/index';
 
 export interface IGetLobbiesInput{
     start?:number,
@@ -12,12 +13,9 @@ export interface IGetLobbiesOutput{
 }
 
 export interface ICreateLobbyInput{
-    name:String;
-    owner:Number;
-}
-
-export interface ICreateLobbyInput{
-    name:String;
+    name?:String;
+    owner?:Number;
+    type?: GameType;
 }
 
 export async function getLobbies(input:IGetLobbiesInput):Promise<IGetLobbiesOutput>{
@@ -55,6 +53,9 @@ export async function createLobby(input: ICreateLobbyInput): Promise<ILobby> {
 function checkInputs(input: ICreateLobbyInput): Promise<ICreateLobbyInput>{
     if(input.name === undefined || input.name === null || input.name.trim().length === 0){
         return Promise.reject(new BaseError("Name is invalid", ErrorCodes.LOBBY_INVALID_NAME));
+    }
+    if(input.type === undefined || input.type === null){
+        return Promise.reject(new BaseError("Type is invalid", ErrorCodes.LOBBY_INVALID_TYPE));
     }
     if(input.owner === undefined || input.owner === null){
         return Promise.reject(new BaseError("Owner is invalid", ErrorCodes.LOBBY_INVALID_OWNER));
