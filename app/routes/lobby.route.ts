@@ -9,6 +9,7 @@ function configure(router:Router):void{
     router.post(BASE, logged(),  async  (req:Request, res:Response) => {
         createLobby({
             name: req.body.name,
+            type: req.body.type,
             owner: res.locals.jwt.payload.id
         })
         .then(lobby => {
