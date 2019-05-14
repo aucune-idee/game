@@ -22,6 +22,14 @@ function configure(router:Router):void{
             res.json(result)
         })
     })
+    router.get(BASE+"/own",logged(), async (req:Request, res:Response) => {
+        getLobbies({
+            member:res.locals.jwt.payload.id
+        })
+        .then(result => {
+            res.json(result)
+        })
+    })
 }
 
 export default configure;

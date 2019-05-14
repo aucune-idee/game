@@ -5,10 +5,15 @@ import { IGameLobby, GameLobbySchema } from './game-lobby';
 
 export interface ILobby extends IGameLobby {
   searchName:String;
+  size:number;
 }
 
 export var LobbySchema: Schema = new Schema(Object.assign({
-  searchName:String
+  searchName:String,
+  size:{
+    type:Number,
+    min:2
+  }
 }, GameLobbySchema));
 
 LobbySchema.pre("save", function(this:ILobby, next) {

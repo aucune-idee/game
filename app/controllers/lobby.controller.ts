@@ -5,7 +5,8 @@ import { GameType } from '@enums/index';
 
 export interface IGetLobbiesInput{
     start?:number,
-    size?:number
+    size?:number,
+    member?:number
 }
 export interface IGetLobbiesOutput{
     lobbies: Array<ILobby>;
@@ -30,18 +31,32 @@ export async function getLobbies(input:IGetLobbiesInput):Promise<IGetLobbiesOutp
     else if(size > 50){
         size = 50;
     }
-    return Lobby.find()
+
+    let params:any = {}
+    if(input.member !== undefined && input.member !== null){
+        params["$or"] = [
+            {members:{
+                _userId:input.member
+            }},
+            {owner:input.member}
+        ];
+    }
+    console.log(params);
+    return Lobby.find(params)
     .limit(size+1)
     .then(lobbies => {
         console.log(lobbies)
         return {
         lobbies:lobbies.length === size+1 ? lobbies.splice(-1,1) : lobbies,
         hasNext:lobbies.length === size+1
-    }});
+    }})
+    .catch(error => {
+        console.error(error)
+        return error;
+    });
 }
 
 export async function createLobby(input: ICreateLobbyInput): Promise<ILobby> {
-    console.log(input);
     return checkInputs(input)
     .then((input: ICreateLobbyInput) => Lobby.create({
         name : input.name,

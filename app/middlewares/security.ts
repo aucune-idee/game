@@ -8,7 +8,6 @@ import {BaseError, ErrorCodes} from '../exceptions/base-error';
 const AUTHORIZATION = "authorization";
 
 export const logged = () => (req: Request, res: Response, next: NextFunction) => {
-    console.log(req);
     if(req === undefined || req.headers === undefined){
         return next(new BaseError("Auth failed", ErrorCodes.INVALID_AUTH));
     }
@@ -27,7 +26,6 @@ export const logged = () => (req: Request, res: Response, next: NextFunction) =>
         console.error(error);
         return next(new BaseError("Auth failed", ErrorCodes.INVALID_AUTH));
     }
-    console.log("auth ok")
     next();
 }
 
