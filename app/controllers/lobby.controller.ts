@@ -13,10 +13,17 @@ export interface IGetLobbiesOutput{
     hasNext:boolean;
 }
 
+export interface IGetLobbyInput{
+    id:number
+}
+
 export interface ICreateLobbyInput{
     name?:String;
-    owner?:Number;
+    owner?:number;
     type?: GameType;
+    members?:Array<{
+        _userId:number
+    }>
 }
 
 export async function getLobbies(input:IGetLobbiesInput):Promise<IGetLobbiesOutput>{
@@ -41,11 +48,9 @@ export async function getLobbies(input:IGetLobbiesInput):Promise<IGetLobbiesOutp
             {owner:input.member}
         ];
     }
-    console.log(params);
     return Lobby.find(params)
     .limit(size+1)
     .then(lobbies => {
-        console.log(lobbies)
         return {
         lobbies:lobbies.length === size+1 ? lobbies.splice(-1,1) : lobbies,
         hasNext:lobbies.length === size+1
@@ -56,12 +61,28 @@ export async function getLobbies(input:IGetLobbiesInput):Promise<IGetLobbiesOutp
     });
 }
 
+export async function getLobby(input: IGetLobbyInput): Promise<ILobby>{
+    return Lobby.findOne({_id:input.id})
+    .then(lobby => {
+        if(lobby !== null && lobby !== undefined){
+            return lobby;
+        }
+        return Promise.reject(null);
+    });
+}
+
 export async function createLobby(input: ICreateLobbyInput): Promise<ILobby> {
+    
     return checkInputs(input)
-    .then((input: ICreateLobbyInput) => Lobby.create({
-        name : input.name,
-        owner: input.owner
-    }));
+    .then((input: ICreateLobbyInput) => {
+        input.members = [{
+            _userId: input.owner ? input.owner: -1
+        }];
+        return Lobby.create({
+            name : input.name,
+            owner: input.owner
+        });
+    });
     
 }
 

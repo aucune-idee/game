@@ -1,4 +1,4 @@
-import { Document, Schema, Model, model} from "mongoose";
+import { Schema, Model, model} from "mongoose";
 import {MongooseAutoIncrementID} from 'mongoose-auto-increment-reworked';
 
 import { IGameLobby, GameLobbySchema } from './game-lobby';

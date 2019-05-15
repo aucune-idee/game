@@ -19,7 +19,6 @@ class App {
     }
 
     private config(): void{
-        
         mongoose.connect(configuration.mongodbConnectChain, {useNewUrlParser: true})
         .then(() => {
             this.configRoutes();

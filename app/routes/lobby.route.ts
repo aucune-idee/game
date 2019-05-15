@@ -1,11 +1,12 @@
 import { Request, Response, Router } from 'express';
 import { logged } from '../middlewares/security';
 
-import { createLobby, getLobbies }  from "../controllers/lobby.controller";
+import { createLobby, getLobbies, getLobby }  from "../controllers/lobby.controller";
 
 let BASE = "/lobbies";
 
 function configure(router:Router):void{
+    console.log("router")
     router.post(BASE, logged(),  async  (req:Request, res:Response) => {
         createLobby({
             name: req.body.name,
@@ -25,6 +26,14 @@ function configure(router:Router):void{
     router.get(BASE+"/own",logged(), async (req:Request, res:Response) => {
         getLobbies({
             member:res.locals.jwt.payload.id
+        })
+        .then(result => {
+            res.json(result)
+        })
+    })
+    router.get(BASE+"/:id",logged(), async (req:Request, res:Response) => {
+        getLobby({
+            id:req.params.id
         })
         .then(result => {
             res.json(result)
