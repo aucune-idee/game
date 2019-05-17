@@ -42,9 +42,7 @@ export async function getLobbies(input:IGetLobbiesInput):Promise<IGetLobbiesOutp
     let params:any = {}
     if(input.member !== undefined && input.member !== null){
         params["$or"] = [
-            {members:{
-                _userId:input.member
-            }},
+            {"members._userId":input.member},
             {owner:input.member}
         ];
     }
