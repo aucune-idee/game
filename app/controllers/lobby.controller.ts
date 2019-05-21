@@ -26,6 +26,11 @@ export interface ICreateLobbyInput{
     }>
 }
 
+export interface ILeaveLobbyInput{
+    userId:number;
+    lobbyId:number
+}
+
 export async function getLobbies(input:IGetLobbiesInput):Promise<IGetLobbiesOutput>{
     let start = input.start === undefined ? 0 : input.start,
         size  = input.size === undefined ? 20 : input.size;
@@ -82,6 +87,48 @@ export async function createLobby(input: ICreateLobbyInput): Promise<ILobby> {
         });
     });
     
+}
+
+export async function leaveLobby(input:ILeaveLobbyInput):Promise<boolean>{
+    return Lobby.findOne({_id:input.lobbyId})
+    .then(lobby => {
+        if(lobby === undefined || lobby === null){
+            return Promise.reject(new BaseError("Input Error", ErrorCodes.LOBBY_LEAVE_INPUT));
+        }
+        if(lobby.members == null){
+            return false;
+        }
+        let index = lobby.members.findIndex(m => m._userId == input.userId);
+        if(index === -1){
+            return Promise.reject(new BaseError("Not a member", ErrorCodes.LOBBY_LEAVE_NOT_MEMBER));
+        }
+        lobby.members.splice(index,1);
+        return lobby.save().then(() => true);
+    })
+}
+
+export async function joinLobby(input:ILeaveLobbyInput):Promise<boolean>{
+    return Lobby.findOne({_id:input.lobbyId})
+    .then(lobby => {
+        if(lobby === undefined || lobby === null){
+            return Promise.reject(new BaseError("Input Error", ErrorCodes.LOBBY_JOIN_INPUT));
+        }
+        if(lobby.members == null){
+            return false;
+        }
+        if(lobby.members.length >= lobby.size){
+            return Promise.reject(new BaseError("Lobby full", ErrorCodes.LOBBY_JOIN_FULL));
+        }
+
+        let index = lobby.members.findIndex(m => m._userId == input.userId);
+        if(index !== -1){
+            return Promise.reject(new BaseError("Already a member", ErrorCodes.LOBBY_JOIN_ALREADY_MEMBER));
+        }
+        lobby.members.push({
+            _userId : input.userId
+        });
+        return lobby.save().then(() => true);
+    })
 }
 
 function checkInputs(input: ICreateLobbyInput): Promise<ICreateLobbyInput>{

@@ -12,7 +12,7 @@ export interface IGameLobby extends Document {
     owner:number;
     members:Array<{
       _userId:number,
-      army:Armies
+      army?:Armies
     }>
   }
   

@@ -48,10 +48,8 @@ class App {
         
         import('./routes').then(configure => configure.default(router));
         this.app.use(router);
-
         errorHandling(this.app);
     }
 }
-
 
 export default new App().app;
