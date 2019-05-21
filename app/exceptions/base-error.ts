@@ -4,7 +4,7 @@ export enum ErrorCodes{
     LOBBY_INVALID_OWNER,
     INVALID_AUTH,
     LOBBY_LEAVE_INPUT,
-    LOBBY_LEAVE_NOT_MEMBER,
+    LOBBY_NOT_MEMBER,
     LOBBY_JOIN_INPUT,
     LOBBY_JOIN_ALREADY_MEMBER,
     LOBBY_JOIN_FULL
@@ -15,7 +15,7 @@ httpCodes.set(ErrorCodes.LOBBY_INVALID_TYPE, 400);
 httpCodes.set(ErrorCodes.LOBBY_INVALID_OWNER, 500);
 httpCodes.set(ErrorCodes.INVALID_AUTH, 401);
 httpCodes.set(ErrorCodes.LOBBY_LEAVE_INPUT, 400);
-httpCodes.set(ErrorCodes.LOBBY_LEAVE_NOT_MEMBER, 401);
+httpCodes.set(ErrorCodes.LOBBY_NOT_MEMBER, 401);
 httpCodes.set(ErrorCodes.LOBBY_JOIN_INPUT, 400);
 httpCodes.set(ErrorCodes.LOBBY_JOIN_ALREADY_MEMBER, 401);
 httpCodes.set(ErrorCodes.LOBBY_JOIN_FULL, 401);

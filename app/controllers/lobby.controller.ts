@@ -1,7 +1,7 @@
 import {Lobby, ILobby } from '../models/lobby.model';
 
 import {BaseError, ErrorCodes} from '../exceptions/base-error';
-import { GameType } from '@enums/index';
+import { GameType, Armies } from '@enums/index';
 
 export interface IGetLobbiesInput{
     start?:number,
@@ -29,6 +29,12 @@ export interface ICreateLobbyInput{
 export interface ILeaveLobbyInput{
     userId:number;
     lobbyId:number
+}
+
+export interface ISelectArmyInput{
+    userId:number;
+    lobbyId:number;
+    army:Armies;
 }
 
 export async function getLobbies(input:IGetLobbiesInput):Promise<IGetLobbiesOutput>{
@@ -100,7 +106,7 @@ export async function leaveLobby(input:ILeaveLobbyInput):Promise<boolean>{
         }
         let index = lobby.members.findIndex(m => m._userId == input.userId);
         if(index === -1){
-            return Promise.reject(new BaseError("Not a member", ErrorCodes.LOBBY_LEAVE_NOT_MEMBER));
+            return Promise.reject(new BaseError("Not a member", ErrorCodes.LOBBY_NOT_MEMBER));
         }
         lobby.members.splice(index,1);
         return lobby.save().then(() => true);
@@ -128,7 +134,25 @@ export async function joinLobby(input:ILeaveLobbyInput):Promise<boolean>{
             _userId : input.userId
         });
         return lobby.save().then(() => true);
-    })
+    });
+}
+
+export function selectArmy(input:ISelectArmyInput):Promise<boolean>{
+    return Lobby.findOne({_id:input.lobbyId})
+    .then(lobby => {
+        if(lobby === undefined || lobby === null){
+            return Promise.reject(new BaseError("Input Error", ErrorCodes.LOBBY_JOIN_INPUT));
+        }
+        if(lobby.members == null){
+            return false;
+        }
+        let member = lobby.members.find(m => m._userId == input.userId);
+        if(member === undefined || member === null){
+            return Promise.reject(new BaseError("Not a member", ErrorCodes.LOBBY_NOT_MEMBER));
+        }
+        member.army = input.army;
+        return lobby.save().then(() => true);
+    });
 }
 
 function checkInputs(input: ICreateLobbyInput): Promise<ICreateLobbyInput>{

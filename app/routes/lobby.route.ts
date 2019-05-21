@@ -2,7 +2,7 @@ import { Request, Response, Router } from 'express';
 import { logged } from '../middlewares/security';
 
 import { createLobby, getLobbies, getLobby,
-    leaveLobby, joinLobby }  from "../controllers/lobby.controller";
+    leaveLobby, joinLobby, selectArmy }  from "../controllers/lobby.controller";
 
 let BASE = "/lobbies";
 
@@ -53,6 +53,16 @@ function configure(router:Router):void{
         return joinLobby({
             lobbyId:req.params.id,
             userId:res.locals.jwt.payload.id
+        })
+        .then(() => {
+            res.status(204).send();
+        })
+    })
+    .put(BASE+"/:id/select-army",logged(), async (req:Request, res:Response) => {
+        return selectArmy({
+            lobbyId:req.params.id,
+            userId:res.locals.jwt.payload.id,
+            army: req.body.army
         })
         .then(() => {
             res.status(204).send();
