@@ -1,4 +1,5 @@
 build/*
+migration/build
 mongod
 data
 secret.json
