@@ -1,6 +1,9 @@
 # compiled output
 /dist
+/build
 /node_modules
+
+*secret*.json
 
 # Logs
 logs
