@@ -28,10 +28,10 @@ let AuthMiddleware = class AuthMiddleware {
         const token = auth.replace('Bearer ', '');
         try {
             let payload = jwt.verify(token, this.configuration.envConfig.jwt.secret);
-            if (!req.locals.jwt) {
-                req.locals.jwt = {};
+            if (!req.jwt) {
+                req.jwt = {};
             }
-            req.locals.jwt.payload = payload;
+            req.jwt = payload;
         }
         catch (error) {
             console.error(error);

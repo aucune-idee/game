@@ -6,7 +6,7 @@ export interface ErrorData{
     status:HttpStatus
 }
 
-const ERRORS:{[index:string] : ErrorData} = {
+export const ERRORS:{[index:string] : ErrorData} = {
     LOBBY_NOT_FOUND:{
         code: 0,
         error: "Lobby not found",
@@ -46,6 +46,11 @@ const ERRORS:{[index:string] : ErrorData} = {
     LOBBY_INVALID_OWNER:{
         code: 6,
         error: "Lobby full",
+        status: HttpStatus.FORBIDDEN
+    },
+    LOBBY_JOIN_INPUT:{
+        code: 7,
+        error: "Input Error",
         status: HttpStatus.FORBIDDEN
     }
 }

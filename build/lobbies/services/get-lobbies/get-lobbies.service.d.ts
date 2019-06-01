@@ -1,5 +1,5 @@
 import { Model } from 'mongoose';
-import { ILobby } from '../interfaces/lobby.interface';
+import { ILobby } from '../../interfaces/lobby.interface';
 import { GetLobbiesInput, GetLobbiesOutput } from '../../dto/get-lobbies';
 export declare class GetLobbiesService {
     private readonly lobbyModel;

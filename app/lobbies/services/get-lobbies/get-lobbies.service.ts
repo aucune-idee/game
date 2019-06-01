@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { ILobby } from '../interfaces/lobby.interface';
+import { ILobby } from '../../interfaces/lobby.interface';
 
 import { LobbyCollectionName } from '../../schemas/lobby.schema';
 import { GetLobbiesInput, GetLobbiesOutput } from '../../dto/get-lobbies';

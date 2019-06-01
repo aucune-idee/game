@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
-const ERRORS = {
+exports.ERRORS = {
     LOBBY_NOT_FOUND: {
         code: 0,
         error: "Lobby not found",
@@ -40,6 +40,11 @@ const ERRORS = {
     LOBBY_INVALID_OWNER: {
         code: 6,
         error: "Lobby full",
+        status: common_1.HttpStatus.FORBIDDEN
+    },
+    LOBBY_JOIN_INPUT: {
+        code: 7,
+        error: "Input Error",
         status: common_1.HttpStatus.FORBIDDEN
     }
 };

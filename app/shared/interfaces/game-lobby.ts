@@ -1,6 +1,8 @@
+import { Document } from 'mongoose';
+
 import { GameType, Armies, enum2Array } from '../enums';
 
-export interface IGameLobby {
+export interface IGameLobby extends Document{
     _id:number,
     createdAt: Date,
     name:String;

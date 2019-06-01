@@ -2,11 +2,11 @@ import { Injectable, HttpException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { ILobby } from '../interfaces/lobby.interface';
+import { ILobby } from '../../interfaces/lobby.interface';
 import { LobbyCollectionName } from '../../schemas/lobby.schema';
 import { ERRORS, BasicException } from '../../../shared/exceptions';
 
-import { JoinLobbyInput, LeaveLobbyInput } from '../../dto/membership';
+import { JoinLobbyInput, LeaveLobbyInput, SelectArmyInput } from '../../dto/membership';
 
 
 @Injectable()
@@ -55,5 +55,24 @@ export class LobbyMembershipService {
             });
             return lobby.save().then(() => true);
         });
+    }
+    
+    public selectArmy(input:SelectArmyInput){
+        return this.lobbyModel
+            .findOne({_id:input.lobbyId})
+            .then(lobby => {
+                if(lobby === undefined || lobby === null){
+                    throw new BasicException(ERRORS.LOBBY_JOIN_INPUT);
+                }
+                if(lobby.members == null){
+                throw new BasicException(ERRORS.LOBBY_INITIALIZATION_ERROR);
+                }
+                let member = lobby.members.find(m => m._userId == input.userId);
+                if(member === undefined || member === null){
+                    throw new BasicException(ERRORS.LOBBY_NOT_A_MEMBER);
+                }
+                member.army = input.army;
+                return lobby.save().then(() => true);
+            });
     }
 }

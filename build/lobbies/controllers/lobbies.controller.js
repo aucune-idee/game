@@ -21,13 +21,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
+const jwt_data_decorator_1 = require("../../common/decorators/jwt-data.decorator");
 const auth_guard_1 = require("../../common/guards/auth.guard");
 const services_1 = require("../services/");
 const create_lobby_1 = require("../dto/create-lobby");
 let LobbiesController = class LobbiesController {
-    constructor(createLobby, getLobbies, lobbyMembership) {
+    constructor(createLobby, findLobbies, lobbyMembership) {
         this.createLobby = createLobby;
-        this.getLobbies = getLobbies;
+        this.findLobbies = findLobbies;
         this.lobbyMembership = lobbyMembership;
     }
     create(input) {
@@ -37,17 +38,42 @@ let LobbiesController = class LobbiesController {
     }
     getLobbies() {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.getLobbies.getLobbies({});
+            return this.findLobbies.getLobbies({});
         });
     }
-    getOwnLobbies(request) {
+    getOwnLobbies(payload) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.getLobbies.getLobbies({ member: request.locals.jwt.payload.id });
+            return this.findLobbies.getLobbies({ member: payload.id });
         });
     }
     getLobby(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.getLobbies.getLobby(id);
+            return this.findLobbies.getLobby(id);
+        });
+    }
+    joinLobby(lobbyId, payload) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.lobbyMembership.join({
+                userId: payload.id,
+                lobbyId: lobbyId
+            });
+        });
+    }
+    leaveLobby(lobbyId, payload) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.lobbyMembership.leave({
+                userId: payload.id,
+                lobbyId: lobbyId
+            });
+        });
+    }
+    selectArmy(lobbyId, payload, body) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.lobbyMembership.selectArmy({
+                userId: payload.id,
+                lobbyId: lobbyId,
+                army: body.army
+            });
         });
     }
 };
@@ -68,7 +94,7 @@ __decorate([
 __decorate([
     common_1.Get('own'),
     common_1.UseGuards(auth_guard_1.AuthGuard),
-    __param(0, common_1.Req()),
+    __param(0, jwt_data_decorator_1.JwtData()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
@@ -80,6 +106,34 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], LobbiesController.prototype, "getLobby", null);
+__decorate([
+    common_1.Put(':lobbyId/join'),
+    common_1.UseGuards(auth_guard_1.AuthGuard),
+    __param(0, common_1.Param('lobbyId')),
+    __param(1, jwt_data_decorator_1.JwtData()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Object]),
+    __metadata("design:returntype", Promise)
+], LobbiesController.prototype, "joinLobby", null);
+__decorate([
+    common_1.Put(':lobbyId/join'),
+    common_1.UseGuards(auth_guard_1.AuthGuard),
+    __param(0, common_1.Param('lobbyId')),
+    __param(1, jwt_data_decorator_1.JwtData()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Object]),
+    __metadata("design:returntype", Promise)
+], LobbiesController.prototype, "leaveLobby", null);
+__decorate([
+    common_1.Put(':lobbyId/select-army'),
+    common_1.UseGuards(auth_guard_1.AuthGuard),
+    __param(0, common_1.Param('lobbyId')),
+    __param(1, jwt_data_decorator_1.JwtData()),
+    __param(2, common_1.Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Object, Object]),
+    __metadata("design:returntype", Promise)
+], LobbiesController.prototype, "selectArmy", null);
 LobbiesController = __decorate([
     common_1.Controller('lobbies'),
     __metadata("design:paramtypes", [services_1.CreateLobbyService,

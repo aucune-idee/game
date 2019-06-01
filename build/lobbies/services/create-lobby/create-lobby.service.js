@@ -22,7 +22,7 @@ let CreateLobbyService = class CreateLobbyService {
         this.lobbyModel = lobbyModel;
     }
     create(input) {
-        checkInputs(input);
+        this.checkInputs(input);
         return this.lobbyModel.create({
             name: input.name,
             type: input.type,

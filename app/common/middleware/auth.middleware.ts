@@ -20,10 +20,10 @@ export class AuthMiddleware implements NestMiddleware {
     const token = <string>auth.replace('Bearer ', '');
     try {
         let payload = <any>jwt.verify(token, this.configuration.envConfig.jwt.secret);
-        if(!req.locals.jwt){
-            req.locals.jwt = {};
+        if(!req.jwt){
+            req.jwt = {};
         }
-        req.locals.jwt.payload = payload;
+        req.jwt = payload;
     } catch (error) {
         console.error(error);
     }

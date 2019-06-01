@@ -4,3 +4,6 @@ export interface ErrorData {
     error: String;
     status: HttpStatus;
 }
+export declare const ERRORS: {
+    [index: string]: ErrorData;
+};

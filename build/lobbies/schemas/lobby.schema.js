@@ -11,12 +11,12 @@ exports.LobbySchema = new mongoose_1.Schema(Object.assign({
         min: 2
     }
 }, schemas_1.GameLobbySchema));
-exports.LobbySchema.pre("save", function (next) {
+exports.LobbySchema.pre("save", (t, next) => {
     let now = new Date();
-    if (!this.createdAt) {
-        this.createdAt = now;
+    if (!t.createdAt) {
+        t.createdAt = now;
     }
-    this.searchName = this.name ? this.name.toLocaleLowerCase() : "";
+    this.searchName = t.name ? t.name.toLocaleLowerCase() : "";
     next();
 });
 exports.LobbySchema.plugin(mongoose_auto_increment_reworked_1.MongooseAutoIncrementID.plugin, { modelName: exports.LobbyCollectionName });

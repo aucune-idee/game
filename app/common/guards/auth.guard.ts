@@ -9,7 +9,7 @@ export class AuthGuard implements CanActivate {
     try{
       return context.switchToHttp().getResponse().locals.jwt.payload != undefined;
     }
-    catch(e:any){
+    catch(e){
       return false;
     }
   }
