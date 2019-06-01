@@ -28,6 +28,7 @@ export class GetLobbiesService {
     
     public getLobby(id:number):Promise<ILobby>{
         return this.lobbyModel.findOne({_id : id})
+        .then(lobby => lobby);
     }
     
     private cleanInput(input:GetLobbiesInput):GetLobbiesInput{

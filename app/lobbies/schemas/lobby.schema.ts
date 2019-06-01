@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import { Schema, Document } from "mongoose";
 import { MongooseAutoIncrementID } from 'mongoose-auto-increment-reworked';
 
 import { GameType } from "@shared/enums";
@@ -16,13 +16,13 @@ export const LobbySchema: Schema = new Schema(Object.assign({
   }
 }, GameLobbySchema));
 
-LobbySchema.pre("save", (t:ILobby, next) =>{
+LobbySchema.pre("save", function(this:ILobby, next){
   let now = new Date();
-  if (!t.createdAt) {
-    t.createdAt = now;
+  if (!this.createdAt) {
+    this.createdAt = now;
   }
 
-  this.searchName = t.name ? t.name.toLocaleLowerCase() : "";
+  this.searchName = this.name ? this.name.toLocaleLowerCase() : "";
   next();
 });
 

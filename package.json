@@ -9,7 +9,7 @@
   "author": "",
   "license": "MIT",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json  && cp app.yaml build/ && cp package.json build/ && cp app/config/secret.json build/app/config/",
+    "build": "tsc -p tsconfig.build.json  && cp app.yaml build/ && cp package.json build/ && cp app/config/secret.json build/config/",
     "format": "prettier --write \"app/**/*.ts\"",
     "start": "ts-node -r tsconfig-paths/register app/main.ts",
     "start:dev": "concurrently --handle-input \"wait-on build/main.js && nodemon\" \"tsc -w -p tsconfig.build.json \" ",
