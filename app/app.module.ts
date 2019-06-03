@@ -3,8 +3,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigService } from './config/config.service';
 import { LobbiesModule } from './lobbies/lobbies.module';
 import { SharedModule } from './shared/shared.module';
-
 import { AuthMiddleware } from './common/middleware/auth.middleware';
+import { GamesModule } from './games/games.module';
+
 
 @Module({
   imports: [MongooseModule.forRootAsync({
@@ -13,7 +14,7 @@ import { AuthMiddleware } from './common/middleware/auth.middleware';
     useFactory: async (configService: ConfigService) => ({
       uri: configService.envConfig.mongodbConnectChain,
     })
-  }), LobbiesModule, SharedModule],
+  }), LobbiesModule, SharedModule, GamesModule],
   controllers: [],
   providers: [ConfigService],
   exports: [ConfigService]

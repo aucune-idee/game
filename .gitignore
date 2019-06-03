@@ -3,7 +3,7 @@
 /build
 /node_modules
 
-*secret*.json
+app/**/*secret*.json
 
 # Logs
 logs
