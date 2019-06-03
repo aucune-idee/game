@@ -7,7 +7,7 @@ export class AuthGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     try{
-      return context.switchToHttp().getResponse().locals.jwt.payload != undefined;
+      return context.switchToHttp().getRequest().jwt != undefined;
     }
     catch(e){
       return false;
