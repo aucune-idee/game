@@ -1,0 +1,31 @@
+{
+  "name": "users",
+  "version": "0.0.1",
+  "description": "n4b project's users services",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aucune-idee/users.git"
+  },
+  "main": "app/server.ts",
+  "engines": {
+    "node": ">=8.0.0"
+  },
+    "scripts": {
+        "start": "node ./main.js"
+    },
+  "keywords": [
+    "n4b",
+    "service",
+    "user",
+    "users"
+  ],
+  "author": "Kamule <benjamin.herbomez@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aucune-idee/users/issues"
+  },
+  "homepage": "https://github.com/aucune-idee/users#readme",
+  "dependencies": {
+   
+  }
+}
