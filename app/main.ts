@@ -9,6 +9,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     cors: {
       origin: function (origin:any, callback:any) {
+        console.log(config.envConfig.cors);
           if (config.envConfig.cors.indexOf(origin) !== -1 || origin == null) {
               callback(null, true)
           } else {
