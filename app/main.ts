@@ -7,7 +7,7 @@ let config = new ConfigService();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    cors: {
+    cors: () => ({
       origin: function (origin:any, callback:any) {
         console.log(config.envConfig.cors);
           if (config.envConfig.cors.indexOf(origin) !== -1 || origin == null) {
@@ -16,7 +16,7 @@ async function bootstrap() {
               callback(new Error('Not allowed by CORS'))
           }
       }
-    }
+    })
   });
   await app.listen(config.envConfig.port);
 }
