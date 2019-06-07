@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { IGame } from '../../interfaces/game.interface';
+import { IGame, IGameDocument } from '../../interfaces/game.interface';
 
 import { GameCollectionName } from '../../schemas/game.schema';
 
@@ -11,7 +11,7 @@ export class GetGamesService {
     
     constructor(
         @InjectModel(GameCollectionName)
-        private readonly lobbyModel: Model<IGame>){}
+        private readonly gameModel: Model<IGameDocument>){}
         
     
     public getGame(id:number):Promise<IGame>{

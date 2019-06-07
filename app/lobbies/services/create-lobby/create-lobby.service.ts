@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { ILobby } from '../../interfaces/lobby.interface';
+import { ILobby, ILobbyDocument } from '../../interfaces/lobby.interface';
 import { LobbyCollectionName } from '../../schemas/lobby.schema';
 
 import { CreateLobbyDto } from '../../dto/create-lobby';
@@ -13,7 +13,7 @@ import { ERRORS, BasicException } from '../../../shared/exceptions';
 export class CreateLobbyService {
     constructor(
         @InjectModel(LobbyCollectionName)
-        private readonly lobbyModel: Model<ILobby>){}
+        private readonly lobbyModel: Model<ILobbyDocument>){}
         
     public create(input:CreateLobbyDto): Promise<ILobby>{
         this.checkInputs(input)

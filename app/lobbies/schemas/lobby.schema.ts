@@ -4,7 +4,7 @@ import { MongooseAutoIncrementID } from 'mongoose-auto-increment-reworked';
 import { GameType } from "@shared/enums";
 import { GameLobbySchema } from "../../shared/schemas";
 
-import { ILobby } from '../interfaces/lobby.interface';
+import { ILobbyDocument } from '../interfaces/lobby.interface';
 
 export const LobbyCollectionName = "Lobby";
 
@@ -16,7 +16,7 @@ export const LobbySchema: Schema = new Schema(Object.assign({
   }
 }, GameLobbySchema));
 
-LobbySchema.pre("save", function(this:ILobby, next){
+LobbySchema.pre("save", function(this:ILobbyDocument, next){
   let now = new Date();
   if (!this.createdAt) {
     this.createdAt = now;

@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { IGame } from '../../interfaces/game.interface';
+import { IGame, IGameDocument } from '../../interfaces/game.interface';
 import { GameCollectionName } from '../../schemas/game.schema';
 
-import { IGame } from '../../../lobby/interfaces/game.interface';
-import { GameCollectionName } from '../../../lobby/schemas/game.schema';
+import { ILobby, ILobbyDocument } from '../../../lobbies/interfaces/lobby.interface';
+import { LobbyCollectionName } from '../../../lobbies/schemas/lobby.schema';
 
 import { CreateGame } from '../../dto/create-game';
 
@@ -16,11 +16,11 @@ import { ERRORS, BasicException } from '../../../shared/exceptions';
 export class CreateGameService {
     constructor(
         @InjectModel(GameCollectionName)
-        private readonly gameModel: Model<IGame>,
+        private readonly gameModel: Model<IGameDocument>,
         @InjectModel(LobbyCollectionName)
-        private readonly lobbyModel: Model<ILobby){}
+        private readonly lobbyModel: Model<ILobbyDocument>){}
         
-    public create(input:CreateGale):Promise<IGame>{
+    public create(input:CreateGame):Promise<IGame>{
         return
             this.lobbyModel.findOne({_id:input.lobbyId})
             .then((lobby:ILobby) => this.controleLobby(lobby))
@@ -40,13 +40,13 @@ export class CreateGameService {
         }
         return lobby;
     }
-    private controleLobby(lobby:ILobby):IGame{
+    private createGame(lobby:ILobby):IGame{
         return {
             _id:lobby._id,
-            name:lobby.name;
-            type: lobby.type;
+            name:lobby.name,
+            type: lobby.type,
             
-            owner:lobby.owner;
+            owner:lobby.owner,
             members:lobby.members
         }
     }
