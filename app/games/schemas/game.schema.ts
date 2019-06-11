@@ -1,7 +1,6 @@
-import { Schema, Document } from "mongoose";
+import { Schema } from "mongoose";
 import { MongooseAutoIncrementID } from 'mongoose-auto-increment-reworked';
 
-import { GameType } from "@shared/enums";
 import { GameLobbySchema } from "../../shared/schemas";
 
 import { IGameDocument } from '../interfaces/game.interface';
@@ -19,6 +18,8 @@ GameSchema.pre("save", function(this:IGameDocument, next){
   }
 
   this.searchName = this.name ? this.name.toLocaleLowerCase() : "";
+  console.log(this);
+  console.log("now", now);
   next();
 });
 

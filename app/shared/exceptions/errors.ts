@@ -35,17 +35,17 @@ export const ERRORS:{[index:string] : ErrorData} = {
     },
     LOBBY_INVALID_NAME:{
         code: 4,
-        error: "Lobby full",
+        error: "Lobby's name invalid",
         status: HttpStatus.FORBIDDEN
     },
     LOBBY_INVALID_TYPE:{
         code: 5,
-        error: "Lobby full",
+        error: "Lobby's type invalid",
         status: HttpStatus.FORBIDDEN
     },
     LOBBY_INVALID_OWNER:{
         code: 6,
-        error: "Lobby full",
+        error: "LLobby's owner invalid",
         status: HttpStatus.FORBIDDEN
     },
     LOBBY_JOIN_INPUT:{
