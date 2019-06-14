@@ -1,12 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { InjectModel } from 'nestjs-typegoose';
+import { ModelType } from 'typegoose';
 
-import { IGame, IGameDocument } from '../../interfaces/game.interface';
-import { GameCollectionName } from '../../schemas/game.schema';
-
-import { ILobby, ILobbyDocument } from '../../../lobbies/interfaces/lobby.interface';
-import { LobbyCollectionName } from '../../../lobbies/schemas/lobby.schema';
+import { Game } from '../../schemas/game.schema';
+import { Lobby } from '../../../lobbies/schemas/lobby.schema';
 
 import { CreateGame } from '../../dto/create-game';
 
@@ -16,15 +13,15 @@ import { never } from 'rxjs';
 @Injectable()
 export class CreateGameService {
     constructor(
-        @InjectModel(GameCollectionName)
-        private readonly gameModel: Model<IGameDocument>,
-        @InjectModel(LobbyCollectionName)
-        private readonly lobbyModel: Model<ILobbyDocument>){}
+        @InjectModel(Game)
+        private readonly gameModel: ModelType<Game>,
+        @InjectModel(Lobby)
+        private readonly lobbyModel: ModelType<Lobby>){}
         
-    public async create(input:CreateGame):Promise<IGame>{
+    public async create(input:CreateGame):Promise<Game>{
         return this.lobbyModel.findOne({_id:input.lobbyId})
-            .then((lobby:ILobby) => this.controleLobby(lobby))
-            .then((lobby:ILobby) => this.createGame(lobby))
+            .then((lobby:Lobby) => this.controleLobby(lobby))
+            .then((lobby:Lobby) => this.createGame(lobby))
             .then((game) => {
                 console.log(game);
                 return game;
@@ -36,7 +33,7 @@ export class CreateGameService {
     }
     
     
-    private controleLobby(lobby:ILobby):ILobby{
+    private controleLobby(lobby:Lobby):Lobby{
         if(!lobby){
             throw new BasicException(ERRORS.LOBBY_NOT_FOUND);
         }
@@ -51,7 +48,7 @@ export class CreateGameService {
         }
         return lobby;
     }
-    private async createGame(lobby:ILobby):Promise<IGame>{
+    private async createGame(lobby:Lobby):Promise<Game>{
         console.log("create", lobby);
         let created = new this.gameModel({
             name:lobby.name,
@@ -64,9 +61,9 @@ export class CreateGameService {
             }))
         });
         console.log(created)
-        return created.save().then((document:IGameDocument) => {
+        return created.save().then((document:Game) => {
             console.log(document)
-            return document as IGame
+            return document as Game
         })
         .catch(error => {
             console.error(error)

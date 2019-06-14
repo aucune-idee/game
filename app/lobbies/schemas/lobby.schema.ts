@@ -1,29 +1,22 @@
-import { Schema, Document } from "mongoose";
-import { MongooseAutoIncrementID } from 'mongoose-auto-increment-reworked';
+import { prop, pre, plugin } from 'typegoose';
+import { IsString, IsInt } from 'class-validator';
+
+import { AutoIncrement } from '../../shared/schemas/sequence-id';
 
 import { GameType } from "@shared/enums";
-import { GameLobbySchema } from "../../shared/schemas";
+import { GameLobby } from "../../shared/schemas";
 
-import { ILobbyDocument } from '../interfaces/lobby.interface';
 
 export const LobbyCollectionName = "Lobby";
 
-export const LobbySchema: Schema = new Schema(Object.assign({
-  searchName:String,
-  size:{
-    type:Number,
-    min:2
-  }
-}, GameLobbySchema));
-
-LobbySchema.pre("save", function(this:ILobbyDocument, next){
-  let now = new Date();
-  if (!this.createdAt) {
-    this.createdAt = now;
-  }
-
-  this.searchName = this.name ? this.name.toLocaleLowerCase() : "";
+@pre<Lobby>('save', async function(next){
+  this._id = await AutoIncrement(LobbyCollectionName);
   next();
-});
-
-LobbySchema.plugin(MongooseAutoIncrementID.plugin, {modelName:LobbyCollectionName});
+})
+export class Lobby extends GameLobby {
+  @prop({ trim: true,lowercase: true })
+  searchName:String;
+  
+  @prop( {min:2})
+  size:Number
+}

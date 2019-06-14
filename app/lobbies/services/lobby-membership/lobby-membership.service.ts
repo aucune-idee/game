@@ -1,9 +1,8 @@
 import { Injectable, HttpException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { InjectModel } from 'nestjs-typegoose';
+import { ModelType } from 'typegoose';
 
-import { ILobby, ILobbyDocument } from '../../interfaces/lobby.interface';
-import { LobbyCollectionName } from '../../schemas/lobby.schema';
+import { Lobby } from '../../schemas/lobby.schema';
 import { ERRORS, BasicException } from '../../../shared/exceptions';
 
 import { JoinLobbyInput, LeaveLobbyInput, SelectArmyInput } from '../../dto/membership';
@@ -13,8 +12,8 @@ import { JoinLobbyInput, LeaveLobbyInput, SelectArmyInput } from '../../dto/memb
 export class LobbyMembershipService {
     
      constructor(
-        @InjectModel(LobbyCollectionName)
-        private readonly lobbyModel: Model<ILobbyDocument>){}
+        @InjectModel(Lobby)
+        private readonly lobbyModel: ModelType<Lobby>){}
         
     public leave(input:JoinLobbyInput):Promise<boolean>{
         return this.lobbyModel.findOne({_id:input.lobbyId})
@@ -51,7 +50,7 @@ export class LobbyMembershipService {
                 throw new BasicException(ERRORS.LOBBY_ALREADY_MEMBER);
             }
             lobby.members.push({
-                _userId : input.userId
+                _userId: input.userId
             });
             return lobby.save().then(() => true);
         });

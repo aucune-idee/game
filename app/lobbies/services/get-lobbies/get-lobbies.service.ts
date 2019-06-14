@@ -1,18 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { InjectModel } from 'nestjs-typegoose';
+import { ModelType } from 'typegoose';
 
-import { ILobby, ILobbyDocument } from '../../interfaces/lobby.interface';
 
-import { LobbyCollectionName } from '../../schemas/lobby.schema';
+import { Lobby } from '../../schemas/lobby.schema';
 import { GetLobbiesInput, GetLobbiesOutput } from '../../dto/get-lobbies';
 
 @Injectable()
 export class GetLobbiesService {
     
     constructor(
-        @InjectModel(LobbyCollectionName)
-        private readonly lobbyModel: Model<ILobbyDocument>){}
+        @InjectModel(Lobby)
+        private readonly lobbyModel: ModelType<Lobby>){}
     
     public getLobbies(input:GetLobbiesInput):Promise<GetLobbiesOutput>{
         input = this.cleanInput(input);
@@ -26,7 +25,7 @@ export class GetLobbiesService {
         }});
     }
     
-    public getLobby(id:number):Promise<ILobby>{
+    public getLobby(id:number):Promise<Lobby>{
         return this.lobbyModel.findOne({_id : id})
         .then(lobby => lobby);
     }

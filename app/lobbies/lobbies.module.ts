@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
+import { TypegooseModule } from 'nestjs-typegoose';
 import { LobbiesController } from './controllers/lobbies.controller';
-import { LobbySchema, LobbyCollectionName } from './schemas/lobby.schema';
+import { Lobby } from './schemas/lobby.schema';
 import { CreateLobbyService, GetLobbiesService, LobbyMembershipService } from './services/';
 
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: LobbyCollectionName, schema: LobbySchema }])],
+  imports: [TypegooseModule.forFeature([Lobby])],
   controllers: [LobbiesController],
   providers: [CreateLobbyService, GetLobbiesService, LobbyMembershipService]
 })

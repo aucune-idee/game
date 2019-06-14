@@ -1,4 +1,4 @@
-import { ILobby } from '../interfaces/lobby.interface';
+import { Lobby } from '../schemas/lobby.schema';
 
 export class GetLobbiesInput{
     start?:number;
@@ -7,6 +7,6 @@ export class GetLobbiesInput{
 }
 
 export class GetLobbiesOutput{
-    lobbies:Array<ILobby>;
+    lobbies:Array<Lobby>;
     hasNext:boolean;
 }

@@ -1,26 +1,16 @@
-import { Schema } from "mongoose";
-import { MongooseAutoIncrementID } from 'mongoose-auto-increment-reworked';
+import { prop, pre, plugin } from 'typegoose';
+import { IsString, IsInt } from 'class-validator';
 
-import { GameLobbySchema } from "../../shared/schemas";
+import { AutoIncrement } from '../../shared/schemas/sequence-id';
 
-import { IGameDocument } from '../interfaces/game.interface';
+import { GameLobby } from "../../shared/schemas";
+
 
 export const GameCollectionName = "Game";
 
-export const GameSchema: Schema = new Schema(Object.assign({
-  searchName:String
-}, GameLobbySchema));
-
-GameSchema.pre("save", function(this:IGameDocument, next){
-  let now = new Date();
-  if (!this.createdAt) {
-    this.createdAt = now;
-  }
-
-  this.searchName = this.name ? this.name.toLocaleLowerCase() : "";
-  console.log(this);
-  console.log("now", now);
+@pre<Game>('save', async function(next){
+  this._id = await AutoIncrement(GameCollectionName);
   next();
-});
-
-GameSchema.plugin(MongooseAutoIncrementID.plugin, {modelName:GameCollectionName});
+})
+export class Game extends GameLobby {
+}

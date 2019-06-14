@@ -1,20 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { InjectModel } from 'nestjs-typegoose';
+import { ModelType } from 'typegoose';
 
-import { IGame, IGameDocument } from '../../interfaces/game.interface';
-
-import { GameCollectionName } from '../../schemas/game.schema';
+import { Game } from '../../schemas/game.schema';
 
 @Injectable()
 export class GetGamesService {
     
     constructor(
-        @InjectModel(GameCollectionName)
-        private readonly gameModel: Model<IGameDocument>){}
+        @InjectModel(Game)
+        private readonly gameModel: ModelType<Game>){}
         
     
-    public getGame(id:number):Promise<IGame>{
+    public getGame(id:number):Promise<Game>{
         return this.gameModel.findOne({_id : id})
         .then(game => game);
     }
