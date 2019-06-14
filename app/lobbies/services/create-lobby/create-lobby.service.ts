@@ -21,6 +21,7 @@ export class CreateLobbyService {
             name    : input.name,
             type    : input.type,
             owner   : input.owner,
+            size    : input.size,
             members : [{
                 _userId:input.owner
             }]
@@ -36,6 +37,10 @@ export class CreateLobbyService {
         }
         if(input.owner === undefined || input.owner === null){
             throw new BasicException(ERRORS.LOBBY_INVALID_OWNER);
+        }
+        if(input.size === undefined || input.size === null ||
+            input.size < 2){
+            throw new BasicException(ERRORS.LOBBY_INVALID_SIZE);
         }
         input.name = input.name.trim();
         return Promise.resolve(input);

@@ -2,10 +2,15 @@ import { IsString, IsInt } from 'class-validator';
 
 import { GameType } from "@shared/enums";
 
-export class CreateLobbyDto {
+export class CreateLobbyInputDto {
     @IsString()
     name:String;
     @IsInt()
-    owner:number;
+    size:number;
     type: GameType;
+}
+
+export class CreateLobbyDto extends CreateLobbyInputDto{
+    @IsInt()
+    owner:number;
 }

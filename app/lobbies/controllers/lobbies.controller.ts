@@ -6,7 +6,7 @@ import { JwtData } from '../../common/decorators/jwt-data.decorator';
 import { AuthGuard } from '../../common/guards/auth.guard';
 
 import { CreateLobbyService, GetLobbiesService, LobbyMembershipService } from '../services/';
-import { CreateLobbyDto } from '../dto/create-lobby';
+import { CreateLobbyInputDto, CreateLobbyDto } from '../dto/create-lobby';
 
 
 @Controller('lobbies')
@@ -19,8 +19,12 @@ export class LobbiesController {
     
     @Post()
     @UseGuards(AuthGuard)
-    async create(@Body() input: CreateLobbyDto) {
-      return this.createLobby.create(input);
+    async create(@Body() input: CreateLobbyDto,
+      @JwtData() payload: any) {
+      let newInput:CreateLobbyDto = new CreateLobbyDto();
+      Object.assign(newInput, input);
+      newInput.owner = payload.id;
+      return this.createLobby.create(newInput);
     }
     
     @Get()

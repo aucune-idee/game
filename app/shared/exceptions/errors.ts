@@ -52,5 +52,10 @@ export const ERRORS:{[index:string] : ErrorData} = {
         code: 7,
         error: "Input Error",
         status: HttpStatus.FORBIDDEN
-    }
+    },
+    LOBBY_INVALID_SIZE:{
+        code: 8,
+        error: "Lobby's size is missing or invalid",
+        status: HttpStatus.FORBIDDEN
+    },
 }
