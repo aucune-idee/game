@@ -37,8 +37,10 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.5.11",
     "mongoose-auto-increment-reworked": "^1.2.1",
+    "nestjs-typegoose": "^5.2.1",
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
-    "rxjs": "^6.3.3"
+    "rxjs": "^6.3.3",
+    "typegoose": "^5.7.1"
   }
 }
