@@ -3,7 +3,6 @@ import { IsString, IsInt } from 'class-validator';
 
 import { AutoIncrement } from '../../shared/schemas/sequence-id';
 
-import { GameType } from "@shared/enums";
 import { GameLobby } from "../../shared/schemas";
 
 

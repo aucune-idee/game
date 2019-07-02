@@ -13,5 +13,5 @@ export class LeaveLobbyInput{
 export interface SelectArmyInput{
     userId:number;
     lobbyId:number;
-    army:Armies;
+    army:Armies | string;
 }

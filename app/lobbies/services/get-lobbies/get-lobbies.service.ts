@@ -13,6 +13,7 @@ export class GetLobbiesService {
         @InjectModel(Lobby)
         private readonly lobbyModel: ModelType<Lobby>){}
     
+
     public getLobbies(input:GetLobbiesInput):Promise<GetLobbiesOutput>{
         input = this.cleanInput(input);
        
@@ -46,11 +47,25 @@ export class GetLobbiesService {
     }
     private getParameters(input:GetLobbiesInput){
         let params:any = {}
+        let and = [];
         if(input.member !== undefined && input.member !== null){
-            params["$or"] = [
+            and.push({"$or" : [
                 {"members._userId":input.member},
                 {owner:input.member}
-            ];
+            ]});
+        }
+        if(input.sizeMin !== undefined && input.sizeMin > 0){
+            and.push({"size": { $gte: input.sizeMin }})
+        }
+        if(input.sizeMax !== undefined && input.sizeMax > 0){
+            and.push({"size": { $lte: input.sizeMax }})
+        }
+        if(input.type !== undefined && input.type !== null){
+            and.push({"type": input.type});
+        }
+
+        if(and.length > 0){
+            params["$and"] = and;
         }
         return params;
     }

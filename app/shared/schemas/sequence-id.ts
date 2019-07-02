@@ -17,7 +17,6 @@ export const AutoIncrement = async function(collectionName:String):Promise<Numbe
     });
     
     let counter:InstanceType<SequenceId> = await SequenceIdModel.findOne({_id:collectionName});
-    console.log("counter", counter)
         
     if(counter === undefined || counter === null){
         counter = new SequenceIdModel({

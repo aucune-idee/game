@@ -1,4 +1,4 @@
-import { GameType, Armies, enum2Array } from '../enums';
+import { GameType, Armies } from '../enums';
 import { Typegoose, prop, arrayProp, pre } from 'typegoose';
 
 class Members{

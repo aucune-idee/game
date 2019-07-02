@@ -6,7 +6,8 @@ import { JwtData } from '../../common/decorators/jwt-data.decorator';
 import { AuthGuard } from '../../common/guards/auth.guard';
 
 import { CreateLobbyService, GetLobbiesService, LobbyMembershipService } from '../services/';
-import { CreateLobbyInputDto, CreateLobbyDto } from '../dto/create-lobby';
+import { CreateLobbyDto } from '../dto/create-lobby';
+import { GetLobbiesInput } from '../dto/get-lobbies';
 
 
 @Controller('lobbies')
@@ -17,6 +18,13 @@ export class LobbiesController {
       private findLobbies:GetLobbiesService,
       private lobbyMembership:LobbyMembershipService){}
     
+    
+    @Post('searches')
+    @UseGuards(AuthGuard)
+    async search(@Body() input: GetLobbiesInput) {
+      return this.findLobbies.getLobbies(input);
+    }
+
     @Post()
     @UseGuards(AuthGuard)
     async create(@Body() input: CreateLobbyDto,
